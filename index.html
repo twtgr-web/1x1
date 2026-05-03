@@ -126,6 +126,24 @@ outline:none;-webkit-appearance:none;
 .overlay-xp{font-size:20px;font-weight:700;color:var(–accent2)}
 .overlay-btn{margin-top:8px;padding:16px 40px;font-size:17px;font-weight:700;border-radius:var(–r);background:var(–accent);color:#fff;border:none;cursor:pointer;width:100%;max-width:280px}
 
+/* EMOJI POPUP */
+.emoji-pop{
+position:fixed;
+top:50%;left:50%;
+transform:translate(-50%,-50%) scale(0);
+font-size:80px;
+z-index:200;
+pointer-events:none;
+animation:emojipop .7s cubic-bezier(.36,.07,.19,.97) forwards;
+line-height:1;
+}
+@keyframes emojipop{
+0%{transform:translate(-50%,-50%) scale(0);opacity:1}
+40%{transform:translate(-50%,-60%) scale(1.2);opacity:1}
+70%{transform:translate(-50%,-65%) scale(1);opacity:1}
+100%{transform:translate(-50%,-80%) scale(.8);opacity:0}
+}
+
 /* CONFETTI */
 .cfp{position:fixed;pointer-events:none;width:8px;height:8px;border-radius:2px;top:-10px;animation:fall linear forwards}
 @keyframes fall{to{top:105vh;opacity:0;transform:rotate(540deg) translateX(20px)}}
@@ -357,19 +375,21 @@ function renderAnswerArea(){
     wrap.appendChild(inp);
     grid.appendChild(wrap);
     const btn=document.createElement('button');
-    btn.style.cssText='width:100%;padding:16px;font-size:18px;font-weight:700;border-radius:16px;border:none;background:#7c3aed;color:#fff;cursor:pointer;margin-top:4px;';
+    btn.style.cssText='width:100%;padding:16px;font-size:18px;font-weight:700;border-radius:16px;border:none;background:#7c3aed;color:#fff;cursor:pointer;margin-top:4px;-webkit-appearance:none;';
     btn.id='master-confirm-btn';
-    btn.textContent='✓ Bestätigen';
-    btn.onclick=submitMaster;
+    btn.textContent='\u2713 Best\u00e4tigen';
+    btn.addEventListener('touchend',function(e){e.preventDefault();submitMaster();});
+    btn.addEventListener('click',function(e){e.preventDefault();submitMaster();});
     grid.appendChild(btn);
     setTimeout(function(){inp.focus();},150);
   } else {
     grid.style.display='grid';
     grid.style.gridTemplateColumns='1fr 1fr';
-    currentQ.opts.forEach(opt=>{
+    currentQ.opts.forEach(function(opt){
       const btn=document.createElement('button');
       btn.className='ans-btn';btn.textContent=opt;
-      btn.onclick=()=>answerMC(opt,btn);
+      btn.addEventListener('touchend',function(e){e.preventDefault();answerMC(opt,btn);});
+      btn.addEventListener('click',function(e){answerMC(opt,btn);});
       grid.appendChild(btn);
     });
   }
@@ -414,7 +434,8 @@ function submitMaster(){
   if(isNaN(val))return;
   roundDone=true;
   inp.disabled=true;
-  document.querySelector('.submit-btn').disabled=true;
+  const confirmBtn=document.getElementById('master-confirm-btn');
+  if(confirmBtn) confirmBtn.disabled=true;
   const correct=(val===currentQ.correct);
   inp.className='master-input '+(correct?'correct-inp':'wrong-inp');
   handleResult(correct,true);
@@ -459,6 +480,7 @@ function handleResult(correct,isMasterResult){
     fb.className='feedback-line good';
     if(!S.done.includes(today)){S.done.push(today);S.streak++;}
     if(isMasterResult){ soundFanfare(); } else { soundCorrect(); }
+    showEmoji(true);
     confetti(isMasterResult?50:knowsIt?25:14);
   } else {
     // track error
@@ -471,6 +493,7 @@ function handleResult(correct,isMasterResult){
     fb.textContent=isMasterResult?`Richtig: ${currentQ.correct} — ${hint}`:`Richtig: ${currentQ.correct} — ${hint}`;
     fb.className='feedback-line bad';
     soundWrong();
+    showEmoji(false);
   }
   updateUI();save();
 
@@ -553,6 +576,21 @@ function buildLeague(){
   });
 }
 
+
+
+// ─── EMOJI POPUP ───────────────────────────────────────────────────────────
+var EMOJI_POS  = ['😄','😁','🥳','👍','✌️','🎉','💪','🌟'];
+var EMOJI_NEG  = ['💩','😢','🤮','😭','🤦'];
+
+function showEmoji(positive){
+  var list = positive ? EMOJI_POS : EMOJI_NEG;
+  var em = list[Math.floor(Math.random()*list.length)];
+  var el = document.createElement('div');
+  el.className = 'emoji-pop';
+  el.textContent = em;
+  document.body.appendChild(el);
+  setTimeout(function(){ el.remove(); }, 750);
+}
 
 // ─── SOUND ENGINE ──────────────────────────────────────────────────────────
 let audioCtx = null;
