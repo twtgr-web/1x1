@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -31,29 +30,29 @@ html,body{height:100%;overflow:hidden;background:#0f0f1a;color:#f4f4f8;font-fami
 #app{height:100vh;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top,12px) 16px env(safe-area-inset-bottom,16px);max-width:420px;margin:0 auto;gap:10px;overflow:hidden}
 
 /* TOP BAR */
-.top-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(–surface);border-radius:var(–r);flex-shrink:0}
-.streak{display:flex;align-items:center;gap:5px;font-weight:700;font-size:17px;color:var(–fire)}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border-radius:var(--r);flex-shrink:0}
+.streak{display:flex;align-items:center;gap:5px;font-weight:700;font-size:17px;color:var(--fire)}
 .xp-info{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
-.xp-today{font-size:13px;font-weight:600;color:var(–accent2)}
-.xp-label{font-size:11px;color:var(–text3)}
+.xp-today{font-size:13px;font-weight:600;color:var(--accent2)}
+.xp-label{font-size:11px;color:var(--text3)}
 
 /* LEVEL PATH */
-.path-card{background:var(–surface);border-radius:var(–r);padding:12px 14px;flex-shrink:0}
+.path-card{background:var(--surface);border-radius:var(--r);padding:12px 14px;flex-shrink:0}
 .path-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.path-title{font-size:12px;font-weight:700;color:var(–text3);letter-spacing:.5px;text-transform:uppercase}
-.level-badge{font-size:12px;font-weight:700;color:var(–accent);background:var(–accent-light);padding:3px 10px;border-radius:20px}
+.path-title{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
+.level-badge{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-light);padding:3px 10px;border-radius:20px}
 .path-nodes{display:flex;align-items:center;gap:0;justify-content:space-between;position:relative}
-.path-line{position:absolute;top:50%;left:8%;right:8%;height:2px;background:var(–surface2);z-index:0;transform:translateY(-50%)}
-.path-line-fill{position:absolute;top:50%;left:8%;height:2px;background:var(–accent);z-index:0;transform:translateY(-50%);transition:width .5s cubic-bezier(.4,0,.2,1);width:0%}
+.path-line{position:absolute;top:50%;left:8%;right:8%;height:2px;background:var(--surface2);z-index:0;transform:translateY(-50%)}
+.path-line-fill{position:absolute;top:50%;left:8%;height:2px;background:var(--accent);z-index:0;transform:translateY(-50%);transition:width .5s cubic-bezier(.4,0,.2,1);width:0%}
 .node{
-width:40px;height:40px;border-radius:50%;
-display:flex;align-items:center;justify-content:center;
-font-size:16px;font-weight:700;
-border:2px solid var(–surface2);
-background:var(–surface2);
-color:var(–text3);
-z-index:1;position:relative;
-transition:all .3s;flex-shrink:0;
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;
+  border:2px solid var(--surface2);
+  background:var(--surface2);
+  color:var(--text3);
+  z-index:1;position:relative;
+  transition:all .3s;flex-shrink:0;
 }
 .node.done{background:#7c3aed;border-color:#7c3aed;color:#fff}
 .node.current{background:#1a1a2e;border-color:#7c3aed;color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.18)}
@@ -62,69 +61,71 @@ transition:all .3s;flex-shrink:0;
 .node.master.current{border-color:#f9c74f;color:#f9c74f;box-shadow:0 0 0 3px rgba(249,199,79,.2)}
 
 /* MODE */
-.mode-pills{display:flex;gap:6px;flex-shrink:0;justify-content:center}
-.mode-pill{flex:1;padding:7px 0;font-size:12px;font-weight:700;border-radius:20px;border:1.5px solid var(–surface2);color:var(–text3);background:transparent;cursor:pointer;letter-spacing:.3px;transition:all .15s}
-.mode-pill.active{border-color:var(–accent);color:var(–accent);background:var(–accent-light)}
+.mode-pills{display:flex;gap:5px;flex-shrink:0;justify-content:center}
+.mode-pill{flex:1;padding:7px 2px;font-size:11px;font-weight:700;border-radius:20px;border:1.5px solid var(--surface2);color:var(--text3);background:transparent;cursor:pointer;letter-spacing:.2px;transition:all .15s;white-space:nowrap}
+.mode-pill.active{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
 
 /* QUESTION */
-.question-card{background:var(–surface);border-radius:var(–r);padding:16px 16px 12px;text-align:center;flex-shrink:0;position:relative;overflow:hidden}
+.question-card{background:var(--surface);border-radius:var(--r);padding:16px 16px 12px;text-align:center;flex-shrink:0;position:relative;overflow:hidden}
 .block-progress{display:flex;gap:4px;justify-content:center;margin-bottom:10px}
-.block-dot{width:28px;height:5px;border-radius:3px;background:var(–surface2);transition:background .3s}
-.block-dot.done{background:var(–accent)}
+.block-dot{width:28px;height:5px;border-radius:3px;background:var(--surface2);transition:background .3s}
+.block-dot.done{background:var(--accent)}
 .block-dot.current{background:rgba(124,58,237,.5)}
-.question-text{font-size:42px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;color:var(–text);margin-bottom:10px}
-.master-label{font-size:11px;font-weight:700;color:var(–gold);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
-.prog-wrap{height:3px;background:var(–surface2);border-radius:2px;overflow:hidden}
-.prog-fill{height:3px;background:linear-gradient(90deg,var(–accent),var(–accent2));border-radius:2px;transition:width .35s ease;width:0%}
+.question-text{font-size:42px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;color:var(--text);margin-bottom:10px}
+.master-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.prog-wrap{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.prog-fill{height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width .35s ease;width:0%}
 
 /* FEEDBACK */
-.feedback-line{text-align:center;font-size:14px;font-weight:600;min-height:20px;flex-shrink:0;color:var(–text3)}
-.feedback-line.good{color:var(–correct)}
-.feedback-line.bad{color:var(–wrong)}
+.feedback-line{text-align:center;font-size:14px;font-weight:600;min-height:20px;flex-shrink:0;color:var(--text3)}
+.feedback-line.good{color:var(--correct)}
+.feedback-line.bad{color:var(--wrong)}
 
 /* ANSWER GRID */
 .answer-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0}
-.ans-btn{padding:16px 8px;font-size:22px;font-weight:700;border-radius:var(–r);border:1.5px solid #22223b;background:#1a1a2e;color:#f4f4f8;cursor:pointer;transition:transform .08s,background .1s,border-color .1s;-webkit-appearance:none;appearance:none}
+.ans-btn{padding:16px 8px;font-size:22px;font-weight:700;border-radius:var(--r);border:1.5px solid #22223b;background:#1a1a2e;color:#f4f4f8;cursor:pointer;transition:transform .08s,background .1s,border-color .1s;-webkit-appearance:none;appearance:none}
 .ans-btn:active:not(:disabled){transform:scale(.96)}
-.ans-btn.correct{background:rgba(6,214,160,.2);border-color:var(–correct);color:var(–correct);animation:pop .22s ease}
-.ans-btn.wrong{background:rgba(239,68,68,.15);border-color:var(–wrong);color:var(–wrong);animation:shake .22s ease}
+.ans-btn.correct{background:rgba(6,214,160,.2);border-color:var(--correct);color:var(--correct);animation:pop .22s ease}
+.ans-btn.wrong{background:rgba(239,68,68,.15);border-color:var(--wrong);color:var(--wrong);animation:shake .22s ease}
 .ans-btn:disabled{cursor:default}
 
 /* MASTER INPUT */
 .master-input-wrap{display:flex;gap:8px;align-items:center}
 .master-input{
-flex:1;padding:16px 12px;font-size:28px;font-weight:700;
-background:var(–surface2);border:1.5px solid var(–surface2);
-border-radius:var(–r);color:var(–text);text-align:center;
-outline:none;-webkit-appearance:none;
+  flex:1;padding:16px 12px;font-size:28px;font-weight:700;
+  background:var(--surface2);border:1.5px solid var(--surface2);
+  border-radius:var(--r);color:var(--text);text-align:center;
+  outline:none;-webkit-appearance:none;
 }
-.master-input:focus{border-color:var(–accent)}
-.master-input.correct-inp{border-color:var(–correct);background:rgba(6,214,160,.15)}
-.master-input.wrong-inp{border-color:var(–wrong);background:rgba(239,68,68,.12)}
-.submit-btn{padding:16px 18px;font-size:22px;font-weight:700;border-radius:var(–r);border:1.5px solid var(–accent);background:var(–accent-light);color:var(–accent);cursor:pointer;transition:all .1s}
+.master-input:focus{border-color:var(--accent)}
+.master-input.correct-inp{border-color:var(--correct);background:rgba(6,214,160,.15)}
+.master-input.wrong-inp{border-color:var(--wrong);background:rgba(239,68,68,.12)}
+.submit-btn{padding:16px 18px;font-size:22px;font-weight:700;border-radius:var(--r);border:1.5px solid var(--accent);background:var(--accent-light);color:var(--accent);cursor:pointer;transition:all .1s}
 .submit-btn:active{transform:scale(.95)}
 
 /* LEAGUE */
-.league-card{background:var(–surface);border-radius:var(–r);padding:10px 14px;flex:1;overflow-y:auto;min-height:0}
-.league-header{font-size:11px;font-weight:700;color:var(–text3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
-.league-row{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:var(–rs);font-size:13px}
+.league-card{background:var(--surface);border-radius:var(--r);padding:10px 14px;flex:1;overflow-y:auto;min-height:0}
+.league-header{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+.league-row{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:var(--rs);font-size:13px}
 .league-row.me{background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.35)}
-.rank-num{width:16px;text-align:center;font-size:11px;font-weight:700;color:var(–text3);flex-shrink:0}
+.rank-num{width:16px;text-align:center;font-size:11px;font-weight:700;color:var(--text3);flex-shrink:0}
 .rank-num.gold{color:#f9c74f}.rank-num.silver{color:#adb5bd}.rank-num.bronze{color:#cd6e3a}
 .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
-.l-name{flex:1;font-weight:500;color:var(–text)}
+.l-name{flex:1;font-weight:500;color:var(--text)}
 .league-row.me .l-name{color:#c4b5fd;font-weight:700}
-.l-xp{font-size:12px;font-weight:700;color:var(–text2)}
+.l-xp{font-size:12px;font-weight:700;color:var(--text2)}
 .league-row.me .l-xp{color:#c4b5fd}
 
 /* LEVEL COMPLETE OVERLAY */
 .overlay{position:fixed;inset:0;background:rgba(15,15,26,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;padding:24px;gap:16px}
 .overlay.hidden{display:none}
 .overlay-icon{font-size:64px;line-height:1}
-.overlay-title{font-size:28px;font-weight:800;color:var(–text);text-align:center}
-.overlay-sub{font-size:15px;color:var(–text2);text-align:center;line-height:1.5}
-.overlay-xp{font-size:20px;font-weight:700;color:var(–accent2)}
-.overlay-btn{margin-top:8px;padding:16px 40px;font-size:17px;font-weight:700;border-radius:var(–r);background:var(–accent);color:#fff;border:none;cursor:pointer;width:100%;max-width:280px}
+.overlay-title{font-size:28px;font-weight:800;color:var(--text);text-align:center}
+.overlay-sub{font-size:15px;color:var(--text2);text-align:center;line-height:1.5}
+.overlay-xp{font-size:20px;font-weight:700;color:var(--accent2)}
+.overlay-btn{margin-top:8px;padding:16px 40px;font-size:17px;font-weight:700;border-radius:var(--r);background:var(--accent);color:#fff;border:none;cursor:pointer;width:100%;max-width:280px}
+
+
 
 /* NAME OVERLAY */
 .name-overlay{position:fixed;inset:0;background:rgba(15,15,26,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:300;padding:32px;gap:20px}
@@ -132,28 +133,28 @@ outline:none;-webkit-appearance:none;
 .name-title{font-size:28px;font-weight:800;color:#f4f4f8;text-align:center}
 .name-sub{font-size:15px;color:#9d9dbc;text-align:center}
 .name-input{
-width:100%;max-width:280px;padding:16px;font-size:22px;font-weight:700;
-background:#22223b;border:2px solid #7c3aed;border-radius:16px;
-color:#f4f4f8;text-align:center;outline:none;-webkit-appearance:none;
+  width:100%;max-width:280px;padding:16px;font-size:22px;font-weight:700;
+  background:#22223b;border:2px solid #7c3aed;border-radius:16px;
+  color:#f4f4f8;text-align:center;outline:none;-webkit-appearance:none;
 }
 .name-btn{padding:16px 40px;font-size:17px;font-weight:700;border-radius:16px;border:none;background:#7c3aed;color:#fff;cursor:pointer;width:100%;max-width:280px}
 
 /* EMOJI POPUP */
 .emoji-pop{
-position:fixed;
-top:50%;left:50%;
-transform:translate(-50%,-50%) scale(0);
-font-size:80px;
-z-index:200;
-pointer-events:none;
-animation:emojipop .7s cubic-bezier(.36,.07,.19,.97) forwards;
-line-height:1;
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  font-size:80px;
+  z-index:200;
+  pointer-events:none;
+  animation:emojipop .7s cubic-bezier(.36,.07,.19,.97) forwards;
+  line-height:1;
 }
 @keyframes emojipop{
-0%{transform:translate(-50%,-50%) scale(0);opacity:1}
-40%{transform:translate(-50%,-60%) scale(1.2);opacity:1}
-70%{transform:translate(-50%,-65%) scale(1);opacity:1}
-100%{transform:translate(-50%,-80%) scale(.8);opacity:0}
+  0%{transform:translate(-50%,-50%) scale(0);opacity:1}
+  40%{transform:translate(-50%,-60%) scale(1.2);opacity:1}
+  70%{transform:translate(-50%,-65%) scale(1);opacity:1}
+  100%{transform:translate(-50%,-80%) scale(.8);opacity:0}
 }
 
 /* CONFETTI */
@@ -164,9 +165,8 @@ line-height:1;
 @keyframes shake{0%,100%{transform:translateX(0)}30%{transform:translateX(-6px)}70%{transform:translateX(6px)}}
 
 .league-card::-webkit-scrollbar{width:3px}
-.league-card::-webkit-scrollbar-thumb{background:var(–surface2);border-radius:2px}
+.league-card::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px}
 </style>
-
 </head>
 <body>
 <div id="app">
@@ -191,7 +191,9 @@ line-height:1;
 
   <div class="mode-pills">
     <button class="mode-pill active" onclick="setMode('mult',this)">× Mal</button>
-    <button class="mode-pill" onclick="setMode('div',this)">÷ Geteilt</button>
+    <button class="mode-pill" onclick="setMode('div',this)">÷ Teilen</button>
+    <button class="mode-pill" onclick="setMode('add',this)">+ Plus</button>
+    <button class="mode-pill" onclick="setMode('sub',this)">− Minus</button>
   </div>
 
   <div class="question-card" id="qcard">
@@ -340,10 +342,20 @@ function genNormalQ(){
         const da=rnd(-2,2),db=rnd(-2,2);
         return Math.max(2,a+da)*Math.max(2,b+db);
       })};
-  } else {
+  } else if(mode==='div'){
     const b=2+Math.floor(Math.random()*9),c=2+Math.floor(Math.random()*9);
     return{text:`${b*c} ÷ ${b} = ?`,correct:c,qKey:`${b*c}d${b}`,a:b*c,b,
       opts:makeOpts(c,()=>2+Math.floor(Math.random()*9))};
+  } else if(mode==='add'){
+    const a=Math.floor(Math.random()*1001),b=Math.floor(Math.random()*(1001-a));
+    const res=a+b;
+    return{text:`${a} + ${b} = ?`,correct:res,qKey:`${a}+${b}`,a,b,
+      opts:makeOpts(res,()=>{const d=rnd(-50,50)||1;return Math.max(0,res+d);})};
+  } else { // sub
+    const a=Math.floor(Math.random()*1001),b=Math.floor(Math.random()*(a+1));
+    const res=a-b;
+    return{text:`${a} − ${b} = ?`,correct:res,qKey:`${a}-${b}`,a,b,
+      opts:makeOpts(res,()=>{const d=rnd(-50,50)||1;return Math.max(0,res+d);})};
   }
 }
 
@@ -351,9 +363,15 @@ function genMasterQ(){
   if(mode==='mult'){
     const a=2+Math.floor(Math.random()*9),b=2+Math.floor(Math.random()*9);
     return{text:`${a} × ${b} = ?`,correct:a*b,qKey:`${a}x${b}`,a,b,master:true};
-  } else {
+  } else if(mode==='div'){
     const b=2+Math.floor(Math.random()*9),c=2+Math.floor(Math.random()*9);
     return{text:`${b*c} ÷ ${b} = ?`,correct:c,qKey:`${b*c}d${b}`,a:b*c,b,master:true};
+  } else if(mode==='add'){
+    const a=Math.floor(Math.random()*1001),b=Math.floor(Math.random()*(1001-a));
+    return{text:`${a} + ${b} = ?`,correct:a+b,qKey:`${a}+${b}`,a,b,master:true};
+  } else {
+    const a=Math.floor(Math.random()*1001),b=Math.floor(Math.random()*(a+1));
+    return{text:`${a} − ${b} = ?`,correct:a-b,qKey:`${a}-${b}`,a,b,master:true};
   }
 }
 
@@ -371,6 +389,9 @@ function nextQuestion(){
   roundDone=false;
   currentQ=isMaster?genMasterQ():genNormalQ();
   document.getElementById('question').textContent=currentQ.text;
+  // adapt font size: add/sub can have long numbers
+  const isLongMode=(mode==='add'||mode==='sub');
+  document.getElementById('question').style.fontSize=isLongMode?'32px':'42px';
   document.getElementById('feedback').textContent='';
   document.getElementById('feedback').className='feedback-line';
   document.getElementById('prog').style.width=isMaster?'100%':(blockQ/BLOCK_SIZE*100)+'%';
@@ -420,7 +441,6 @@ function renderAnswerArea(){
 function elaboratedHint(q){
   if(mode==='mult'){
     const a=q.a,b=q.b,res=q.correct;
-    // break into friendly steps
     if(b<=5||a<=5){
       const small=Math.min(a,b),big=Math.max(a,b);
       return `${a} × ${b}: ${small} × ${big} = ${res}`;
@@ -428,9 +448,24 @@ function elaboratedHint(q){
     const half=Math.floor(b/2),rem=b-half;
     const p1=a*half,p2=a*rem;
     return `${a}×${b}: ${a}×${half}=${p1}, +${a}×${rem}=${p2} → ${res}`;
-  } else {
+  } else if(mode==='div'){
     const dividend=q.a,divisor=q.b,res=q.correct;
     return `${dividend}÷${divisor}: ${divisor}×${res}=${dividend}`;
+  } else if(mode==='add'){
+    const a=q.a,b=q.b,res=q.correct;
+    // show round-number trick if useful
+    const roundA=Math.round(a/10)*10,diffA=roundA-a;
+    if(diffA>0&&diffA<=5){
+      return `${a}+${b}: auf ${roundA} runden (+${diffA}), dann +${b-diffA} = ${res}`;
+    }
+    return `${a} + ${b} = ${res}`;
+  } else {
+    const a=q.a,b=q.b,res=q.correct;
+    const roundB=Math.round(b/10)*10,diffB=roundB-b;
+    if(diffB>0&&diffB<=5){
+      return `${a}−${b}: erst −${roundB} = ${a-roundB}, dann +${diffB} = ${res}`;
+    }
+    return `${a} − ${b} = ${res}`;
   }
 }
 
@@ -766,6 +801,5 @@ function initName(){
 }
 initName();
 </script>
-
 </body>
 </html>
