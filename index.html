@@ -126,6 +126,18 @@ outline:none;-webkit-appearance:none;
 .overlay-xp{font-size:20px;font-weight:700;color:var(–accent2)}
 .overlay-btn{margin-top:8px;padding:16px 40px;font-size:17px;font-weight:700;border-radius:var(–r);background:var(–accent);color:#fff;border:none;cursor:pointer;width:100%;max-width:280px}
 
+/* NAME OVERLAY */
+.name-overlay{position:fixed;inset:0;background:rgba(15,15,26,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:300;padding:32px;gap:20px}
+.name-overlay.hidden{display:none}
+.name-title{font-size:28px;font-weight:800;color:#f4f4f8;text-align:center}
+.name-sub{font-size:15px;color:#9d9dbc;text-align:center}
+.name-input{
+width:100%;max-width:280px;padding:16px;font-size:22px;font-weight:700;
+background:#22223b;border:2px solid #7c3aed;border-radius:16px;
+color:#f4f4f8;text-align:center;outline:none;-webkit-appearance:none;
+}
+.name-btn{padding:16px 40px;font-size:17px;font-weight:700;border-radius:16px;border:none;background:#7c3aed;color:#fff;cursor:pointer;width:100%;max-width:280px}
+
 /* EMOJI POPUP */
 .emoji-pop{
 position:fixed;
@@ -202,6 +214,14 @@ line-height:1;
   <button class="overlay-btn" onclick="closeOverlay()">Weiter →</button>
 </div>
 
+<div class="name-overlay hidden" id="name-overlay">
+  <div style="font-size:56px">👋</div>
+  <div class="name-title">Wie heißt du?</div>
+  <div class="name-sub">Dein Name erscheint in der Liga</div>
+  <input class="name-input" id="name-input" type="text" maxlength="12" placeholder="Dein Name" autocomplete="off">
+  <button class="name-btn" id="name-btn">Los geht's!</button>
+</div>
+
 <script>
 const DAYS=['Mo','Di','Mi','Do','Fr','Sa','So'];
 const AV=[['#7c3aed','#c4b5fd'],['#065f46','#6ee7b7'],['#92400e','#fcd34d'],['#831843','#fbcfe8'],['#1e3a8a','#93c5fd'],['#3b0764','#e9d5ff']];
@@ -238,7 +258,7 @@ function loadState(){
 }
 function fresh(){
   return{
-    streak:0,totalXp:0,todayXp:0,todayLeagueXp:0,
+    playerName:'',streak:0,totalXp:0,todayXp:0,todayLeagueXp:0,
     lastDate:'',done:[],
     level:1,blockIndex:0, // blockIndex: 0-4 = regular nodes, 5 = master
     leagueXp:NAMES.map(()=>AI_DAILY_MIN+Math.floor(Math.random()*(AI_DAILY_MAX-AI_DAILY_MIN)))
@@ -562,7 +582,7 @@ function updateUI(){
 function buildLeague(){
   const lt=document.getElementById('league');
   const rows=NAMES.map((n,i)=>({name:n,xp:S.leagueXp[i],i}));
-  rows.push({name:'Du',xp:S.todayXp,me:true,i:99});
+  rows.push({name:S.playerName||'Du',xp:S.todayXp,me:true,i:99});
   rows.sort((a,b)=>b.xp-a.xp);
   lt.innerHTML='<div class="league-header">🏅 Liga — heute</div>';
   rows.slice(0,8).forEach((r,rank)=>{
@@ -721,7 +741,30 @@ function bigConfetti(){for(let i=0;i<5;i++)setTimeout(()=>confetti(20),i*200);}
 // Fix syntax error: use ASCII parenthesis
 function levelLabel(n){return'Level '+n+' gemeistert!';}
 
-updateUI();buildPath();startBlock();
+// ─── NAME PROMPT ───────────────────────────────────────────────────────────
+function initName(){
+  if(!S.playerName){
+    var overlay=document.getElementById('name-overlay');
+    overlay.classList.remove('hidden');
+    var inp=document.getElementById('name-input');
+    var btn=document.getElementById('name-btn');
+    function confirm(){
+      var n=inp.value.trim();
+      if(!n) return;
+      S.playerName=n;
+      save();
+      overlay.classList.add('hidden');
+      updateUI();buildPath();startBlock();
+    }
+    btn.addEventListener('touchend',function(e){e.preventDefault();confirm();});
+    btn.addEventListener('click',confirm);
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();confirm();}});
+    setTimeout(function(){inp.focus();},100);
+  } else {
+    updateUI();buildPath();startBlock();
+  }
+}
+initName();
 </script>
 
 </body>
