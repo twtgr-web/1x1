@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="1×1 Trainer">
 <meta name="theme-color" content="#0f0f1a">
-<title>1x1 Trainer v6</title>
+<title>1x1 Trainer v12</title>
 <style>
 :root{
   --bg:#0f0f1a;
@@ -61,9 +61,15 @@ html,body{height:100%;overflow:hidden;background:#0f0f1a;color:#f4f4f8;font-fami
 .node.master.current{border-color:#f9c74f;color:#f9c74f;box-shadow:0 0 0 3px rgba(249,199,79,.2)}
 
 /* MODE */
-.mode-pills{display:flex;gap:5px;flex-shrink:0;justify-content:center}
-.mode-pill{flex:1;padding:7px 2px;font-size:11px;font-weight:700;border-radius:20px;border:1.5px solid var(--surface2);color:var(--text3);background:transparent;cursor:pointer;letter-spacing:.2px;transition:all .15s;white-space:nowrap}
+.mode-pills{display:flex;gap:6px;flex-shrink:0;justify-content:center}
+.mode-pill{flex:1;padding:7px 0;font-size:12px;font-weight:700;border-radius:20px;border:1.5px solid var(--surface2);color:var(--text3);background:transparent;cursor:pointer;letter-spacing:.3px;transition:all .15s}
 .mode-pill.active{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+
+/* ROW SELECTOR (only visible in mult mode) */
+.row-selector{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:center;overflow:hidden;max-height:0;opacity:0;transition:max-height .3s ease,opacity .25s ease,margin .25s ease;margin-top:0}
+.row-selector.visible{max-height:80px;opacity:1;margin-top:0}
+.row-pill{padding:5px 0;font-size:11px;font-weight:700;border-radius:16px;border:1.5px solid var(--surface2);color:var(--text3);background:transparent;cursor:pointer;letter-spacing:.2px;transition:all .15s;flex:0 0 calc(11.11% - 5px);min-width:32px;text-align:center}
+.row-pill.active{border-color:var(--accent2);color:var(--accent2);background:rgba(6,214,160,.15)}
 
 /* QUESTION */
 .question-card{background:var(--surface);border-radius:var(--r);padding:16px 16px 12px;text-align:center;flex-shrink:0;position:relative;overflow:hidden}
@@ -166,6 +172,28 @@ html,body{height:100%;overflow:hidden;background:#0f0f1a;color:#f4f4f8;font-fami
 
 .league-card::-webkit-scrollbar{width:3px}
 .league-card::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px}
+
+/* GROUP VISUALIZATION */
+.group-viz{
+  background:var(--surface);border-radius:var(--r);padding:10px 14px;
+  flex-shrink:0;overflow:hidden;
+  max-height:0;opacity:0;
+  transition:max-height .4s ease,opacity .3s ease,padding .3s ease;
+  padding-top:0;padding-bottom:0;
+}
+.group-viz.visible{max-height:120px;opacity:1;padding:10px 14px;}
+.group-viz-label{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.4px;text-transform:uppercase;margin-bottom:7px}
+.group-viz-rows{display:flex;flex-direction:column;gap:5px}
+.group-row{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.group-dot{
+  width:14px;height:14px;border-radius:3px;
+  background:var(--accent);opacity:0;
+  transform:scale(0);
+  transition:opacity .2s ease,transform .2s ease;
+}
+.group-dot.show{opacity:1;transform:scale(1);}
+.group-sum{font-size:12px;font-weight:700;color:var(--text2);margin-left:4px;opacity:0;transition:opacity .3s ease;}
+.group-sum.show{opacity:1;}
 </style>
 </head>
 <body>
@@ -191,9 +219,22 @@ html,body{height:100%;overflow:hidden;background:#0f0f1a;color:#f4f4f8;font-fami
 
   <div class="mode-pills">
     <button class="mode-pill active" onclick="setMode('mult',this)">× Mal</button>
-    <button class="mode-pill" onclick="setMode('div',this)">÷ Teilen</button>
+    <button class="mode-pill" onclick="setMode('div',this)">÷ Geteilt</button>
     <button class="mode-pill" onclick="setMode('add',this)">+ Plus</button>
     <button class="mode-pill" onclick="setMode('sub',this)">− Minus</button>
+  </div>
+
+  <div class="row-selector" id="row-selector">
+    <button class="row-pill active" onclick="setMultRow(0,this)" title="Alle Reihen">Alle</button>
+    <button class="row-pill" onclick="setMultRow(2,this)">2er</button>
+    <button class="row-pill" onclick="setMultRow(3,this)">3er</button>
+    <button class="row-pill" onclick="setMultRow(4,this)">4er</button>
+    <button class="row-pill" onclick="setMultRow(5,this)">5er</button>
+    <button class="row-pill" onclick="setMultRow(6,this)">6er</button>
+    <button class="row-pill" onclick="setMultRow(7,this)">7er</button>
+    <button class="row-pill" onclick="setMultRow(8,this)">8er</button>
+    <button class="row-pill" onclick="setMultRow(9,this)">9er</button>
+    <button class="row-pill" onclick="setMultRow(10,this)">10er</button>
   </div>
 
   <div class="question-card" id="qcard">
@@ -204,6 +245,10 @@ html,body{height:100%;overflow:hidden;background:#0f0f1a;color:#f4f4f8;font-fami
   </div>
 
   <div class="feedback-line" id="feedback"></div>
+  <div class="group-viz" id="group-viz">
+    <div class="group-viz-label">So geht's</div>
+    <div class="group-viz-rows" id="group-viz-rows"></div>
+  </div>
   <div class="answer-grid" id="grid"></div>
   <div class="league-card" id="league"></div>
 </div>
@@ -238,6 +283,7 @@ const AI_DAILY_MAX=550;
 const KEY='einmaleins_v4';
 let S=loadState();
 let mode='mult';
+let multRow=0; // 0 = alle Reihen, 2-10 = konkrete Reihe
 let isMaster=false;
 let blockQ=0;
 let roundDone=false;
@@ -300,6 +346,19 @@ function setMode(m,btn){
   mode=m;
   document.querySelectorAll('.mode-pill').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
+  const rs=document.getElementById('row-selector');
+  if(m==='mult'){
+    rs.classList.add('visible');
+  } else {
+    rs.classList.remove('visible');
+  }
+  startBlock();
+}
+
+function setMultRow(row,btn){
+  multRow=row;
+  document.querySelectorAll('.row-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
   startBlock();
 }
 
@@ -336,7 +395,15 @@ function advanceDot(){
 // ─── QUESTION GEN ──────────────────────────────────────────────────────────
 function genNormalQ(){
   if(mode==='mult'){
-    const a=2+Math.floor(Math.random()*9),b=2+Math.floor(Math.random()*9);
+    let a,b;
+    if(multRow===0){
+      a=2+Math.floor(Math.random()*9);
+      b=2+Math.floor(Math.random()*9);
+    } else {
+      // Reihe steht immer als zweiter Faktor (Multiplikator), erster Faktor variiert
+      b=multRow;
+      a=2+Math.floor(Math.random()*9);
+    }
     return{text:`${a} × ${b} = ?`,correct:a*b,qKey:`${a}x${b}`,a,b,
       opts:makeOpts(a*b,()=>{
         const da=rnd(-2,2),db=rnd(-2,2);
@@ -347,31 +414,40 @@ function genNormalQ(){
     return{text:`${b*c} ÷ ${b} = ?`,correct:c,qKey:`${b*c}d${b}`,a:b*c,b,
       opts:makeOpts(c,()=>2+Math.floor(Math.random()*9))};
   } else if(mode==='add'){
-    const a=Math.floor(Math.random()*1001),b=Math.floor(Math.random()*(1001-a));
-    const res=a+b;
-    return{text:`${a} + ${b} = ?`,correct:res,qKey:`${a}+${b}`,a,b,
-      opts:makeOpts(res,()=>{const d=rnd(-50,50)||1;return Math.max(0,res+d);})};
+    const a=Math.floor(Math.random()*991)+10; // 10–1000
+    const b=Math.floor(Math.random()*991)+10;
+    return{text:`${a} + ${b} = ?`,correct:a+b,qKey:`${a}p${b}`,a,b,
+      opts:makeOpts(a+b,()=>{const d=rnd(-20,20)||1;return a+b+d;})};
   } else { // sub
-    const a=Math.floor(Math.random()*1001),b=Math.floor(Math.random()*(a+1));
-    const res=a-b;
-    return{text:`${a} − ${b} = ?`,correct:res,qKey:`${a}-${b}`,a,b,
-      opts:makeOpts(res,()=>{const d=rnd(-50,50)||1;return Math.max(0,res+d);})};
+    const a=Math.floor(Math.random()*901)+100; // 100–1000
+    const b=Math.floor(Math.random()*(a-1))+1; // b < a, kein negatives Ergebnis
+    return{text:`${a} − ${b} = ?`,correct:a-b,qKey:`${a}m${b}`,a,b,
+      opts:makeOpts(a-b,()=>{const d=rnd(-20,20)||1;return Math.max(0,a-b+d);})};
   }
 }
 
 function genMasterQ(){
   if(mode==='mult'){
-    const a=2+Math.floor(Math.random()*9),b=2+Math.floor(Math.random()*9);
+    let a,b;
+    if(multRow===0){
+      a=2+Math.floor(Math.random()*9);
+      b=2+Math.floor(Math.random()*9);
+    } else {
+      b=multRow;
+      a=2+Math.floor(Math.random()*9);
+    }
     return{text:`${a} × ${b} = ?`,correct:a*b,qKey:`${a}x${b}`,a,b,master:true};
   } else if(mode==='div'){
     const b=2+Math.floor(Math.random()*9),c=2+Math.floor(Math.random()*9);
     return{text:`${b*c} ÷ ${b} = ?`,correct:c,qKey:`${b*c}d${b}`,a:b*c,b,master:true};
   } else if(mode==='add'){
-    const a=Math.floor(Math.random()*1001),b=Math.floor(Math.random()*(1001-a));
-    return{text:`${a} + ${b} = ?`,correct:a+b,qKey:`${a}+${b}`,a,b,master:true};
+    const a=Math.floor(Math.random()*991)+10;
+    const b=Math.floor(Math.random()*991)+10;
+    return{text:`${a} + ${b} = ?`,correct:a+b,qKey:`${a}p${b}`,a,b,master:true};
   } else {
-    const a=Math.floor(Math.random()*1001),b=Math.floor(Math.random()*(a+1));
-    return{text:`${a} − ${b} = ?`,correct:a-b,qKey:`${a}-${b}`,a,b,master:true};
+    const a=Math.floor(Math.random()*901)+100;
+    const b=Math.floor(Math.random()*(a-1))+1;
+    return{text:`${a} − ${b} = ?`,correct:a-b,qKey:`${a}m${b}`,a,b,master:true};
   }
 }
 
@@ -387,11 +463,9 @@ function rnd(a,b){return a+Math.floor(Math.random()*(b-a+1));}
 let currentQ=null;
 function nextQuestion(){
   roundDone=false;
+  hideGroupViz();
   currentQ=isMaster?genMasterQ():genNormalQ();
   document.getElementById('question').textContent=currentQ.text;
-  // adapt font size: add/sub can have long numbers
-  const isLongMode=(mode==='add'||mode==='sub');
-  document.getElementById('question').style.fontSize=isLongMode?'32px':'42px';
   document.getElementById('feedback').textContent='';
   document.getElementById('feedback').className='feedback-line';
   document.getElementById('prog').style.width=isMaster?'100%':(blockQ/BLOCK_SIZE*100)+'%';
@@ -452,20 +526,9 @@ function elaboratedHint(q){
     const dividend=q.a,divisor=q.b,res=q.correct;
     return `${dividend}÷${divisor}: ${divisor}×${res}=${dividend}`;
   } else if(mode==='add'){
-    const a=q.a,b=q.b,res=q.correct;
-    // show round-number trick if useful
-    const roundA=Math.round(a/10)*10,diffA=roundA-a;
-    if(diffA>0&&diffA<=5){
-      return `${a}+${b}: auf ${roundA} runden (+${diffA}), dann +${b-diffA} = ${res}`;
-    }
-    return `${a} + ${b} = ${res}`;
+    return `${q.a} + ${q.b} = ${q.correct}`;
   } else {
-    const a=q.a,b=q.b,res=q.correct;
-    const roundB=Math.round(b/10)*10,diffB=roundB-b;
-    if(diffB>0&&diffB<=5){
-      return `${a}−${b}: erst −${roundB} = ${a-roundB}, dann +${diffB} = ${res}`;
-    }
-    return `${a} − ${b} = ${res}`;
+    return `${q.a} − ${q.b} = ${q.correct}`;
   }
 }
 
@@ -549,21 +612,42 @@ function handleResult(correct,isMasterResult){
     fb.className='feedback-line bad';
     soundWrong();
     showEmoji(false);
+    // Gruppen-Visualisierung nur bei Multiplikation
+    if(mode==='mult'){
+      const vizA=Math.min(currentQ.a,10);
+      const vizB=Math.min(currentQ.b,10);
+      showGroupViz(vizA, vizB);
+    }
   }
   updateUI();save();
 
   if(isMasterResult){
-    setTimeout(()=>finishMaster(correct),correct?1200:1800);
+    if(correct){
+      setTimeout(()=>finishMaster(true),1200);
+    } else {
+      showContinueBtn(()=>finishMaster(false));
+    }
     return;
   }
 
   blockQ++;
   advanceDot();
 
-  if(blockQ>=BLOCK_SIZE){
-    setTimeout(()=>finishBlock(correct),correct?1000:1500);
+  if(correct){
+    if(blockQ>=BLOCK_SIZE){
+      setTimeout(()=>finishBlock(true),1000);
+    } else {
+      setTimeout(nextQuestion,900);
+    }
   } else {
-    setTimeout(nextQuestion,correct?900:1400);
+    // Bei falscher Antwort: warten bis Kind auf "Verstanden" klickt
+    showContinueBtn(()=>{
+      if(blockQ>=BLOCK_SIZE){
+        finishBlock(false);
+      } else {
+        nextQuestion();
+      }
+    });
   }
 }
 
@@ -633,7 +717,85 @@ function buildLeague(){
 
 
 
-// ─── EMOJI POPUP ───────────────────────────────────────────────────────────
+// ─── GROUP VISUALIZATION ───────────────────────────────────────────────────
+function showGroupViz(a, b){
+  // a Gruppen à b Punkte — cap bei 10×10 damit es nicht explodiert
+  const groups = Math.min(a, 10);
+  const perGroup = Math.min(b, 10);
+  const container = document.getElementById('group-viz-rows');
+  const viz = document.getElementById('group-viz');
+  container.innerHTML = '';
+
+  // Farbpalette: jede Gruppe bekommt eine eigene Farbe
+  const colors = ['#7c3aed','#06d6a0','#f77f00','#3b82f6','#f9c74f','#ef4444','#ff6b9d','#00d4ff','#a3e635','#fb923c'];
+  let running = 0;
+
+  for(let g = 0; g < groups; g++){
+    const row = document.createElement('div');
+    row.className = 'group-row';
+    const col = colors[g % colors.length];
+
+    for(let d = 0; d < perGroup; d++){
+      const dot = document.createElement('div');
+      dot.className = 'group-dot';
+      dot.style.background = col;
+      row.appendChild(dot);
+    }
+
+    running += perGroup;
+    const sum = document.createElement('span');
+    sum.className = 'group-sum';
+    sum.textContent = '= ' + running;
+    row.appendChild(sum);
+    container.appendChild(row);
+  }
+
+  viz.classList.add('visible');
+
+  // Dots nacheinander einblenden
+  const allDots = container.querySelectorAll('.group-dot');
+  allDots.forEach((dot, i) => {
+    setTimeout(() => dot.classList.add('show'), 80 + i * 30);
+  });
+  // Zeilensummen nach den Dots der jeweiligen Zeile
+  const allSums = container.querySelectorAll('.group-sum');
+  allSums.forEach((sum, g) => {
+    setTimeout(() => sum.classList.add('show'), 80 + (g + 1) * perGroup * 30 + 60);
+  });
+}
+
+function hideGroupViz(){
+  const viz = document.getElementById('group-viz');
+  viz.classList.remove('visible');
+  setTimeout(() => { document.getElementById('group-viz-rows').innerHTML = ''; }, 400);
+}
+// ─── CONTINUE BUTTON (nach falscher Antwort) ───────────────────────────────
+function showContinueBtn(callback){
+  const grid = document.getElementById('grid');
+  const btn = document.createElement('button');
+  btn.id = 'continue-btn';
+  btn.textContent = 'Verstanden →';
+  btn.style.cssText = [
+    'width:100%',
+    'padding:15px',
+    'font-size:16px',
+    'font-weight:700',
+    'border-radius:var(--r)',
+    'border:1.5px solid var(--wrong)',
+    'background:rgba(239,68,68,.12)',
+    'color:var(--wrong)',
+    'cursor:pointer',
+    'margin-top:4px',
+    '-webkit-appearance:none',
+    'animation:pop .2s ease'
+  ].join(';');
+  let fired = false;
+  function fire(e){ if(e) e.preventDefault(); if(fired) return; fired=true; callback(); }
+  btn.addEventListener('click', fire);
+  btn.addEventListener('touchend', fire);
+  grid.appendChild(btn);
+}
+
 var EMOJI_POS  = ['😄','😁','🥳','👍','✌️','🎉','💪','🌟'];
 var EMOJI_NEG  = ['💩','😢','🤮','😭','🤦'];
 
@@ -789,6 +951,7 @@ function initName(){
       S.playerName=n;
       save();
       overlay.classList.add('hidden');
+      document.getElementById('row-selector').classList.add('visible');
       updateUI();buildPath();startBlock();
     }
     btn.addEventListener('touchend',function(e){e.preventDefault();confirm();});
@@ -796,6 +959,7 @@ function initName(){
     inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();confirm();}});
     setTimeout(function(){inp.focus();},100);
   } else {
+    document.getElementById('row-selector').classList.add('visible');
     updateUI();buildPath();startBlock();
   }
 }
